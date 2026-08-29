@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>学生党 · AI技能产品包</title>
+<style>
+:root{--pink:#FF4D8D;--orange:#FF8A3D;--yellow:#FFC93C;--green:#7ED957;--cyan:#31C6D4;--purple:#A55EEA;--ink:#3A2D3F;--bg:#FFF6FA;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--ink);line-height:1.6;}
+#gate{position:fixed;inset:0;background:linear-gradient(135deg,#FF4D8D,#A55EEA);display:flex;align-items:center;justify-content:center;z-index:99;}
+#gate .box{background:#fff;border:3px solid var(--ink);box-shadow:8px 8px 0 var(--ink);border-radius:18px;padding:32px;max-width:360px;text-align:center;}
+#gate h2{font-size:22px;margin-bottom:10px;}
+#gate p{font-size:13px;color:#777;margin:8px 0;}
+#gate input{width:100%;padding:12px;border:3px solid var(--ink);border-radius:10px;font-size:16px;margin:10px 0;}
+#gate button{width:100%;padding:12px;border:none;background:var(--ink);color:#fff;border-radius:10px;font-size:16px;cursor:pointer;}
+.gate-err{color:var(--pink);font-size:13px;min-height:18px;}
+.hero{padding:48px 20px;text-align:center;background:linear-gradient(135deg,#FFE3F1,#E9E4FF);}
+.hero .big{font-size:54px;}
+.hero h1{font-size:30px;margin:8px 0;}
+.hero .tag{display:inline-block;background:var(--ink);color:#fff;padding:6px 16px;border-radius:999px;font-size:14px;margin-top:8px;}
+.wrap{max-width:1100px;margin:0 auto;padding:24px 16px;}
+.stat{text-align:center;font-size:15px;margin:14px 0;font-weight:bold;}
+.search{display:flex;gap:10px;margin:18px 0;}
+.search input{flex:1;padding:12px 14px;border:3px solid var(--ink);border-radius:12px;font-size:15px;}
+.search span{align-self:center;font-size:13px;color:#888;}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;}
+.chips button{padding:6px 12px;border:2px solid var(--ink);background:#fff;border-radius:999px;font-size:13px;cursor:pointer;transition:.15s;}
+.chips button:hover{background:var(--ink);color:#fff;}
+#cnt{font-weight:bold;color:var(--pink);}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:18px;}
+.card{background:#fff;border:3px solid var(--ink);box-shadow:6px 6px 0 var(--ink);border-radius:16px;padding:18px;display:flex;flex-direction:column;}
+.card-head{display:flex;align-items:center;gap:8px;}
+.card-head h3{font-size:17px;}
+.dot{width:14px;height:14px;border-radius:50%;display:inline-block;}
+.dot0{background:var(--pink);}.dot1{background:var(--orange);}.dot2{background:var(--yellow);}.dot3{background:var(--green);}.dot4{background:var(--cyan);}.dot5{background:var(--purple);}
+.desc{font-size:13px;color:#555;margin:8px 0;}
+.caps{list-style:none;font-size:13px;}
+.caps li{padding:3px 0 3px 16px;position:relative;}
+.caps li:before{content:"✓";position:absolute;left:0;color:var(--green);font-weight:bold;}
+.card-foot{display:flex;gap:8px;margin-top:12px;}
+.copy-btn{flex:1;padding:9px;border:none;background:var(--pink);color:#fff;border-radius:10px;font-size:13px;cursor:pointer;}
+.det-btn{padding:9px 12px;border:3px solid var(--ink);background:#fff;border-radius:10px;font-size:13px;cursor:pointer;}
+.detail{margin-top:12px;border-top:2px dashed #eee;padding-top:10px;}
+.plabel{font-size:12px;color:#888;margin-bottom:6px;}
+pre.prompt{background:#FAF7FF;border:2px solid var(--ink);border-radius:10px;padding:10px;font-size:12px;white-space:pre-wrap;word-break:break-all;}
+.footer{text-align:center;padding:36px 20px;color:#888;font-size:13px;}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 18px;border-radius:999px;font-size:14px;opacity:0;transition:.3s;z-index:50;}
+.toast.show{opacity:1;}
+</style></head>
+<body>
+<div id="gate"><div class="box">
+  <h2>🔐 学生党 专属技能包</h2>
+  <p>本页为付费交付内容，请输入密码解锁。</p>
+  <input id="pw" type="password" placeholder="请输入密码" autocomplete="off">
+  <button onclick="unlock()">解锁查看</button>
+  <p class="gate-err" id="err"></p>
+</div></div>
+<div id="app" style="display:none">
+  <header class="hero">
+    <div class="big">🎓</div>
+    <h1>学生党 · AI技能产品包</h1>
+    <div class="tag">论文作业PPT简历，AI替你打辅助</div>
+    <p style="max-width:640px;margin:16px auto 0;font-size:14px;color:#555;">大学/研究生/考研党，DDL 永远在追，最缺时间和排版审美。</p>
+  </header>
+  <div class="wrap">
+    <div class="stat">本包共收录 <b>7</b> 个可二次开发的 AI 技能 · 打开即用 · 支持改源码</div>
+    <div class="search"><input id="q" placeholder="🔍 想交什么直接说，如「写论文改论文」「改简历」「做答辩PPT」…" oninput="search()"><span id="cnt">共 7 个</span></div>
+    <div class="chips"><button onclick="chip('写论文改论文')">📝 写论文改论文</button><button onclick="chip('改简历')">📄 改简历</button><button onclick="chip('做答辩PPT')">🎨 做答辩PPT</button><button onclick="chip('论文排版')">🧹 论文排版</button><button onclick="chip('模拟面试')">🎯 模拟面试</button><button onclick="chip('毕业论文格式')">✍️ 毕业论文格式</button></div>
+    <div class="grid" id="grid">
+<article class="card" data-search="tencent-docx 专业 Word / Docx / DOCX 文档（.docx）创作与美化助手。当用户需要生成、创作、排版或美化 Word / Docx / DOCX 文档（.docx 文件）时必须调用。核心能力：(1) 生成专业 Word 文档 —— 从零创作研报 / 论文 / 公文 / 合同 / 商务报告 / 会议纪要等垂类专业 .docx，自带专业封面与版式；(2) 专业美化 Word 文档 —— 对已有 Word / Docx / DOCX 文档进行专业排版美化，调整版式、优化视觉层级、统一格式风格；(3) 输出交付 —— 导出专业 .docx / Word 文档。不适用：纯代码文件、非 Word / Docx 类操作。触发词：写 Word、生成 Word、写 Docx、生成 DOCX、生成 .docx、创作 Word 文档、写文档、生成文档、起草报告、写研报、写论文、写合同、写公文、Word 排版、Docx 排版、DOCX 美化、Word 美化、Word 排版美化、Docx 排版美化、美化 Word 文档、美化 Docx 文档、美化 DOCX、美化 .docx、专业美化 Word、专业 Word 排版、加封面、调整 Word 版式、导出 Word、导出 Docx、导出 DOCX、导出 .docx 按 orchestrator Stage 0 判断入口类型 按 Stage 链路由到对应 Agent/Skill 由下游 Skill（doc-typeset / html-to-docx 等）决定具体工具调用 生成专业 Word / Docx / DOCX 文档：从头创作研报 / 年报 / 论文 / 公文 / 合同 / 商务报告 / 会议纪要等垂类专业 .docx，自动生成封面、目录、专业排版。 专业美化 Word / Docx / DOCX 文档：对已有 Word 文档进行专业排版美化 —— 调整版式结构、优化视觉层级、统一字体字号、规范表格与图片、生成专业级视觉呈现。 专业输出交付：导出本地专业级 .docx / Word 文档，可直接分发或投稿。">
+  <div class="card-head"><span class="dot dot0"></span><h3>tencent-docx</h3></div>
+  <p class="desc">专业 Word / Docx / DOCX 文档（.docx）创作与美化助手。当用户需要生成、创作、排版或美化 Word / Docx / DOCX 文档（.docx 文件）时必须调用。核心能力：(1) 生成专业 Word 文档 —— 从零创作研报 / 论文 / 公文 / 合同 / 商务报告 / 会议纪要等垂类专业 .docx，自带专业封面与版式；(2) 专业美化 Word 文档 —— 对已有 Word / Docx / DOCX 文档进行专业排版美化，调整版式、优化视觉层级、统一格式风格；(3) 输出交付 —— 导出专业 .docx / Word 文档。不适用：纯代码文件、非 Word / Docx 类操作。触发词：写 Word、生成 Word、写 Docx、生成 DOCX、生成 .docx、创作 Word 文档、写文档、生成文档、起草报告、写研报、写论文、写合同、写公文、Word 排版、Docx 排版、DOCX 美化、Word 美化、Word 排版美化、Docx 排版美化、美化 Word 文档、美化 Docx 文档、美化 DOCX、美化 .docx、专业美化 Word、专业 Word 排版、加封面、调整 Word 版式、导出 Word、导出 Docx、导出 DOCX、导出 .docx</p>
+  <ul class="caps"><li>按 orchestrator Stage 0 判断入口类型</li><li>按 Stage 链路由到对应 Agent/Skill</li><li>由下游 Skill（doc-typeset / html-to-docx 等）决定具体工具调用</li><li>生成专业 Word / Docx / DOCX 文档：从头创作研报 / 年报 / 论文 / 公文 / 合同 / 商务报告 / 会议纪要等垂类专业 .docx，自动生成封面、目录、专业排版。</li><li>专业美化 Word / Docx / DOCX 文档：对已有 Word 文档进行专业排版美化 —— 调整版式结构、优化视觉层级、统一字体字号、规范表格与图片、生成专业级视觉呈现。</li><li>专业输出交付：导出本地专业级 .docx / Word 文档，可直接分发或投稿。</li></ul>
+  <div class="card-foot">
+    <button class="copy-btn" data-prompt="你是我的【tencent-docx】专属助手。
+背景：专业 Word / Docx / DOCX 文档（.docx）创作与美化助手。当用户需要生成、创作、排版或美化 Word / Docx / DOCX 文档（.docx 文件）时必须调用。核心能力：(1) 生成专业 Word 文档 —— 从零创作研报 / 论文 / 公文 / 合同 / 商务报告 / 会议纪要等垂类专业 .docx，自带专业封面与版式；(2) 专业美化 Word 文档 —— 对已有 Word / Docx / DOCX 文档进行专业排版美化，调整版式、优化视觉层级、统一格式风格；(3) 输出交付 —— 导出专业 .docx / Word 文档。不适用：纯代码文件、非 Word / Docx 类操作。触发词：写 Word、生成 Word、写 Docx、生成 DOCX、生成 .docx、创作 Word 文档、写文档、生成文档、起草报告、写研报、写论文、写合同、写公文、Word 排版、Docx 排版、DOCX 美化、Word 美化、Word 排版美化、Docx 排版美化、美化 Word 文档、美化 Docx 文档、美化 DOCX、美化 .docx、专业美化 Word、专业 Word 排版、加封面、调整 Word 版式、导出 Word、导出 Docx、导出 DOCX、导出 .docx
+请你重点帮我完成这些事：按 orchestrator Stage 0 判断入口类型；按 Stage 链路由到对应 Agent/Skill；由下游 Skill（doc-typeset / html-to-docx 等）决定具体工具调用；生成专业 Word / Docx / DOCX 文档：从头创作研报 / 年报 / 论文 / 公文 / 合同 / 商务报告 / 会议纪要等垂类专业 .docx，自动生成封面、目录、专业排版。；专业美化 Word / Docx / DOCX 文档：对已有 Word 文档进行专业排版美化 —— 调整版式结构、优化视觉层级、统一字体字号、规范表格与图片、生成专业级视觉呈现。；专业输出交付：导出本地专业级 .docx / Word 文档，可直接分发或投稿。。
+请直接给我可执行的步骤或最终产出，别说废话。">📋 复制调用指令</button>
+    <button class="det-btn">详情 ▾</button>
+  </div>
+  <div class="detail" hidden>
+    <p class="plabel">👉 把下面这段直接发给任意 AI 即可调用：</p>
+    <pre class="prompt">你是我的【tencent-docx】专属助手。
+背景：专业 Word / Docx / DOCX 文档（.docx）创作与美化助手。当用户需要生成、创作、排版或美化 Word / Docx / DOCX 文档（.docx 文件）时必须调用。核心能力：(1) 生成专业 Word 文档 —— 从零创作研报 / 论文 / 公文 / 合同 / 商务报告 / 会议纪要等垂类专业 .docx，自带专业封面与版式；(2) 专业美化 Word 文档 —— 对已有 Word / Docx / DOCX 文档进行专业排版美化，调整版式、优化视觉层级、统一格式风格；(3) 输出交付 —— 导出专业 .docx / Word 文档。不适用：纯代码文件、非 Word / Docx 类操作。触发词：写 Word、生成 Word、写 Docx、生成 DOCX、生成 .docx、创作 Word 文档、写文档、生成文档、起草报告、写研报、写论文、写合同、写公文、Word 排版、Docx 排版、DOCX 美化、Word 美化、Word 排版美化、Docx 排版美化、美化 Word 文档、美化 Docx 文档、美化 DOCX、美化 .docx、专业美化 Word、专业 Word 排版、加封面、调整 Word 版式、导出 Word、导出 Docx、导出 DOCX、导出 .docx
+请你重点帮我完成这些事：按 orchestrator Stage 0 判断入口类型；按 Stage 链路由到对应 Agent/Skill；由下游 Skill（doc-typeset / html-to-docx 等）决定具体工具调用；生成专业 Word / Docx / DOCX 文档：从头创作研报 / 年报 / 论文 / 公文 / 合同 / 商务报告 / 会议纪要等垂类专业 .docx，自动生成封面、目录、专业排版。；专业美化 Word / Docx / DOCX 文档：对已有 Word 文档进行专业排版美化 —— 调整版式结构、优化视觉层级、统一字体字号、规范表格与图片、生成专业级视觉呈现。；专业输出交付：导出本地专业级 .docx / Word 文档，可直接分发或投稿。。
+请直接给我可执行的步骤或最终产出，别说废话。</pre>
+  </div>
+</article>
+<article class="card" data-search="design-token 根据文档类型（genre）选择合适的设计令牌主题和版式规则，输出标准化的 DesignTokenOutput，供 doc-typeset skill 消费。版式规则文件作为补充上下文，描述该 genre 对应的国标排版规范（如 GB/T 9704）。 按 genre 从 tokens/compiled/index.json 定位对应产物文件（未命中 → general）； 直接读取该 compiled JSON 作为 DesignTokenOutput 返回，无需任何转换或 LLM 推理。">
+  <div class="card-head"><span class="dot dot1"></span><h3>design-token</h3></div>
+  <p class="desc">根据文档类型（genre）选择合适的设计令牌主题和版式规则，输出标准化的 DesignTokenOutput，供 doc-typeset skill 消费。版式规则文件作为补充上下文，描述该 genre 对应的国标排版规范（如 GB/T 9704）。</p>
+  <ul class="caps"><li>按 genre 从 tokens/compiled/index.json 定位对应产物文件（未命中 → general）；</li><li>直接读取该 compiled JSON 作为 DesignTokenOutput 返回，无需任何转换或 LLM 推理。</li></ul>
+  <div class="card-foot">
+    <button class="copy-btn" data-prompt="你是我的【design-token】专属助手。
+背景：根据文档类型（genre）选择合适的设计令牌主题和版式规则，输出标准化的 DesignTokenOutput，供 doc-typeset skill 消费。版式规则文件作为补充上下文，描述该 genre 对应的国标排版规范（如 GB/T 9704）。
+请你重点帮我完成这些事：按 genre 从 tokens/compiled/index.json 定位对应产物文件（未命中 → general）；；直接读取该 compiled JSON 作为 DesignTokenOutput 返回，无需任何转换或 LLM 推理。。
+请直接给我可执行的步骤或最终产出，别说废话。">📋 复制调用指令</button>
+    <button class="det-btn">详情 ▾</button>
+  </div>
+  <div class="detail" hidden>
+    <p class="plabel">👉 把下面这段直接发给任意 AI 即可调用：</p>
+    <pre class="prompt">你是我的【design-token】专属助手。
+背景：根据文档类型（genre）选择合适的设计令牌主题和版式规则，输出标准化的 DesignTokenOutput，供 doc-typeset skill 消费。版式规则文件作为补充上下文，描述该 genre 对应的国标排版规范（如 GB/T 9704）。
+请你重点帮我完成这些事：按 genre 从 tokens/compiled/index.json 定位对应产物文件（未命中 → general）；；直接读取该 compiled JSON 作为 DesignTokenOutput 返回，无需任何转换或 LLM 推理。。
+请直接给我可执行的步骤或最终产出，别说废话。</pre>
+  </div>
+</article>
+<article class="card" data-search="doc-typeset 接收上游 design-token skill 的 token 输出和原始文档内容，输出排版美化的完整 HTML 字符串。 命中 → 加载 prompts/{genre}.md（排版 prompt）+ templates/{genre}.html（HTML 骨架） 未命中 → 加载 prompts/base.md + templates/base.html 字体大小：--fs-{level}（如 --fs-h1、--fs-body） 字体族：--ff-{type}（如 --ff-heading、--ff-body） 颜色：--color-{name}（如 --color-primary、--color-text） 间距：--spacing-{name}（如 --spacing-paragraph、--spacing-section） 页边距：--margin-page 内容区宽度：--page-content-width">
+  <div class="card-head"><span class="dot dot2"></span><h3>doc-typeset</h3></div>
+  <p class="desc">接收上游 design-token skill 的 token 输出和原始文档内容，输出排版美化的完整 HTML 字符串。</p>
+  <ul class="caps"><li>命中 → 加载 prompts/{genre}.md（排版 prompt）+ templates/{genre}.html（HTML 骨架）</li><li>未命中 → 加载 prompts/base.md + templates/base.html</li><li>字体大小：--fs-{level}（如 --fs-h1、--fs-body）</li><li>字体族：--ff-{type}（如 --ff-heading、--ff-body）</li><li>颜色：--color-{name}（如 --color-primary、--color-text）</li><li>间距：--spacing-{name}（如 --spacing-paragraph、--spacing-section）</li></ul>
+  <div class="card-foot">
+    <button class="copy-btn" data-prompt="你是我的【doc-typeset】专属助手。
+背景：接收上游 design-token skill 的 token 输出和原始文档内容，输出排版美化的完整 HTML 字符串。
+请你重点帮我完成这些事：命中 → 加载 prompts/{genre}.md（排版 prompt）+ templates/{genre}.html（HTML 骨架）；未命中 → 加载 prompts/base.md + templates/base.html；字体大小：--fs-{level}（如 --fs-h1、--fs-body）；字体族：--ff-{type}（如 --ff-heading、--ff-body）；颜色：--color-{name}（如 --color-primary、--color-text）；间距：--spacing-{name}（如 --spacing-paragraph、--spacing-section）。
+请直接给我可执行的步骤或最终产出，别说废话。">📋 复制调用指令</button>
+    <button class="det-btn">详情 ▾</button>
+  </div>
+  <div class="detail" hidden>
+    <p class="plabel">👉 把下面这段直接发给任意 AI 即可调用：</p>
+    <pre class="prompt">你是我的【doc-typeset】专属助手。
+背景：接收上游 design-token skill 的 token 输出和原始文档内容，输出排版美化的完整 HTML 字符串。
+请你重点帮我完成这些事：命中 → 加载 prompts/{genre}.md（排版 prompt）+ templates/{genre}.html（HTML 骨架）；未命中 → 加载 prompts/base.md + templates/base.html；字体大小：--fs-{level}（如 --fs-h1、--fs-body）；字体族：--ff-{type}（如 --ff-heading、--ff-body）；颜色：--color-{name}（如 --color-primary、--color-text）；间距：--spacing-{name}（如 --spacing-paragraph、--spacing-section）。
+请直接给我可执行的步骤或最终产出，别说废话。</pre>
+  </div>
+</article>
+<article class="card" data-search="underline-toolkit 生成带下划线填空位的 Word 文档（create 模式）或对已有下划线模板回填数据（fill 模式）。适用于合同、协议、申请表、有封面的文档（如毕业论文）等。触发关键词：下划线、填空、下划线模板、合同填空、表单回填、下划线回填。 create 模式：addunderlinerun() 不传 value（或 value=&quot;&quot;）→ 空白下划线 fill 模式：addunderlinerun(value=&quot;实际内容&quot;) → 内容 + 下划线保留">
+  <div class="card-head"><span class="dot dot3"></span><h3>underline-toolkit</h3></div>
+  <p class="desc">生成带下划线填空位的 Word 文档（create 模式）或对已有下划线模板回填数据（fill 模式）。适用于合同、协议、申请表、有封面的文档（如毕业论文）等。触发关键词：下划线、填空、下划线模板、合同填空、表单回填、下划线回填。</p>
+  <ul class="caps"><li>create 模式：addunderlinerun() 不传 value（或 value=&quot;&quot;）→ 空白下划线</li><li>fill 模式：addunderlinerun(value=&quot;实际内容&quot;) → 内容 + 下划线保留</li></ul>
+  <div class="card-foot">
+    <button class="copy-btn" data-prompt="你是我的【underline-toolkit】专属助手。
+背景：生成带下划线填空位的 Word 文档（create 模式）或对已有下划线模板回填数据（fill 模式）。适用于合同、协议、申请表、有封面的文档（如毕业论文）等。触发关键词：下划线、填空、下划线模板、合同填空、表单回填、下划线回填。
+请你重点帮我完成这些事：create 模式：addunderlinerun() 不传 value（或 value=&quot;&quot;）→ 空白下划线；fill 模式：addunderlinerun(value=&quot;实际内容&quot;) → 内容 + 下划线保留。
+请直接给我可执行的步骤或最终产出，别说废话。">📋 复制调用指令</button>
+    <button class="det-btn">详情 ▾</button>
+  </div>
+  <div class="detail" hidden>
+    <p class="plabel">👉 把下面这段直接发给任意 AI 即可调用：</p>
+    <pre class="prompt">你是我的【underline-toolkit】专属助手。
+背景：生成带下划线填空位的 Word 文档（create 模式）或对已有下划线模板回填数据（fill 模式）。适用于合同、协议、申请表、有封面的文档（如毕业论文）等。触发关键词：下划线、填空、下划线模板、合同填空、表单回填、下划线回填。
+请你重点帮我完成这些事：create 模式：addunderlinerun() 不传 value（或 value=&quot;&quot;）→ 空白下划线；fill 模式：addunderlinerun(value=&quot;实际内容&quot;) → 内容 + 下划线保留。
+请直接给我可执行的步骤或最终产出，别说废话。</pre>
+  </div>
+</article>
+<article class="card" data-search="nano-banana-expert 通过指导agent智能调度 Nano-Banana 模型，针对\&quot;照片级真实感、皮肤质感还原、旧照片修复、人物肖像、产品实拍\&quot;等场景深度优化 prompt 工程，输出照片级还原的真实感视觉与商业级人像摄影，擅长自然皮肤纹理、眼神光与镜头语言术语。 不接收参数；返回账户与余额摘要 modelType（可选，string）：资源类型枚举 TEXT / IMAGE / VIDEO（本 Skill 用 IMAGE） path（必填，string）：用户授权的本地文件绝对路径 filename（可选，string）：覆盖上传文件名 contentType（可选，string）：覆盖 MIME 类型；不确定时省略并由客户端识别 publicModelId（必填，string）：来自 listmodels(modelType=&quot;IMAGE&quot;) 的当前模型 ID routingMode（必填，string）：选中模型实际返回的 COSTFIRST / SPEEDFIRST / SUCCESSFIRST prompt（必填，string）：描述主体、构图、风格、光线与文字">
+  <div class="card-head"><span class="dot dot4"></span><h3>nano-banana-expert</h3></div>
+  <p class="desc">通过指导agent智能调度 Nano-Banana 模型，针对\&quot;照片级真实感、皮肤质感还原、旧照片修复、人物肖像、产品实拍\&quot;等场景深度优化 prompt 工程，输出照片级还原的真实感视觉与商业级人像摄影，擅长自然皮肤纹理、眼神光与镜头语言术语。</p>
+  <ul class="caps"><li>不接收参数；返回账户与余额摘要</li><li>modelType（可选，string）：资源类型枚举 TEXT / IMAGE / VIDEO（本 Skill 用 IMAGE）</li><li>path（必填，string）：用户授权的本地文件绝对路径</li><li>filename（可选，string）：覆盖上传文件名</li><li>contentType（可选，string）：覆盖 MIME 类型；不确定时省略并由客户端识别</li><li>publicModelId（必填，string）：来自 listmodels(modelType=&quot;IMAGE&quot;) 的当前模型 ID</li></ul>
+  <div class="card-foot">
+    <button class="copy-btn" data-prompt="你是我的【nano-banana-expert】专属助手。
+背景：通过指导agent智能调度 Nano-Banana 模型，针对\&quot;照片级真实感、皮肤质感还原、旧照片修复、人物肖像、产品实拍\&quot;等场景深度优化 prompt 工程，输出照片级还原的真实感视觉与商业级人像摄影，擅长自然皮肤纹理、眼神光与镜头语言术语。
+请你重点帮我完成这些事：不接收参数；返回账户与余额摘要；modelType（可选，string）：资源类型枚举 TEXT / IMAGE / VIDEO（本 Skill 用 IMAGE）；path（必填，string）：用户授权的本地文件绝对路径；filename（可选，string）：覆盖上传文件名；contentType（可选，string）：覆盖 MIME 类型；不确定时省略并由客户端识别；publicModelId（必填，string）：来自 listmodels(modelType=&quot;IMAGE&quot;) 的当前模型 ID。
+请直接给我可执行的步骤或最终产出，别说废话。">📋 复制调用指令</button>
+    <button class="det-btn">详情 ▾</button>
+  </div>
+  <div class="detail" hidden>
+    <p class="plabel">👉 把下面这段直接发给任意 AI 即可调用：</p>
+    <pre class="prompt">你是我的【nano-banana-expert】专属助手。
+背景：通过指导agent智能调度 Nano-Banana 模型，针对\&quot;照片级真实感、皮肤质感还原、旧照片修复、人物肖像、产品实拍\&quot;等场景深度优化 prompt 工程，输出照片级还原的真实感视觉与商业级人像摄影，擅长自然皮肤纹理、眼神光与镜头语言术语。
+请你重点帮我完成这些事：不接收参数；返回账户与余额摘要；modelType（可选，string）：资源类型枚举 TEXT / IMAGE / VIDEO（本 Skill 用 IMAGE）；path（必填，string）：用户授权的本地文件绝对路径；filename（可选，string）：覆盖上传文件名；contentType（可选，string）：覆盖 MIME 类型；不确定时省略并由客户端识别；publicModelId（必填，string）：来自 listmodels(modelType=&quot;IMAGE&quot;) 的当前模型 ID。
+请直接给我可执行的步骤或最终产出，别说废话。</pre>
+  </div>
+</article>
+<article class="card" data-search="resume-ai-help 用于直接改写、润色或优化简历内容。当用户要求「优化简历」「改写简历」「润色简历」「帮我写简历」「生成优化版简历」「把这段经历写得更好」，或上传整份简历并要求产出修改后的版本时触发。支持复现简历「AI 帮你写」两阶段追问与优化交互；整份优化固定生成 HTML 和 PDF，单字段优化只返回该字段。仅负责内容创作和改写，不执行整份简历诊断、问题清单或 6 维评分；用户仅要求分析问题、评审或打分时，改用 resume-diagnosis。 仅排版：不执行岗位确认，直接解析和渲染。 简历已有明确 position：视为已确认，不重复询问。 进入条件：已确定 dataFieldCode，并完成岗位确认。 将完整响应保存到资源目录之外的临时 JSON 文件，然后只启动一次 Python： 调用一次 resumeresourcebundleget {&quot;includeallprompts&quot;:true,&quot;includemoduleconfig&quot;:true,&quot;theme&quot;:&quot;default&quot;}。 使用已物化的 resume-module-config.json 执行解析，再执行 runner init。 进入条件：岗位已确认，字段类型和原文已确定。输出 fields.json，其中包含 position。 执行 aihelp.py render --stage ask。输出渲染后的追问 systemPrompt/userContent。">
+  <div class="card-head"><span class="dot dot5"></span><h3>resume-ai-help</h3></div>
+  <p class="desc">用于直接改写、润色或优化简历内容。当用户要求「优化简历」「改写简历」「润色简历」「帮我写简历」「生成优化版简历」「把这段经历写得更好」，或上传整份简历并要求产出修改后的版本时触发。支持复现简历「AI 帮你写」两阶段追问与优化交互；整份优化固定生成 HTML 和 PDF，单字段优化只返回该字段。仅负责内容创作和改写，不执行整份简历诊断、问题清单或 6 维评分；用户仅要求分析问题、评审或打分时，改用 resume-diagnosis。</p>
+  <ul class="caps"><li>仅排版：不执行岗位确认，直接解析和渲染。</li><li>简历已有明确 position：视为已确认，不重复询问。</li><li>进入条件：已确定 dataFieldCode，并完成岗位确认。</li><li>将完整响应保存到资源目录之外的临时 JSON 文件，然后只启动一次 Python：</li><li>调用一次 resumeresourcebundleget {&quot;includeallprompts&quot;:true,&quot;includemoduleconfig&quot;:true,&quot;theme&quot;:&quot;default&quot;}。</li><li>使用已物化的 resume-module-config.json 执行解析，再执行 runner init。</li></ul>
+  <div class="card-foot">
+    <button class="copy-btn" data-prompt="你是我的【resume-ai-help】专属助手。
+背景：用于直接改写、润色或优化简历内容。当用户要求「优化简历」「改写简历」「润色简历」「帮我写简历」「生成优化版简历」「把这段经历写得更好」，或上传整份简历并要求产出修改后的版本时触发。支持复现简历「AI 帮你写」两阶段追问与优化交互；整份优化固定生成 HTML 和 PDF，单字段优化只返回该字段。仅负责内容创作和改写，不执行整份简历诊断、问题清单或 6 维评分；用户仅要求分析问题、评审或打分时，改用 resume-diagnosis。
+请你重点帮我完成这些事：仅排版：不执行岗位确认，直接解析和渲染。；简历已有明确 position：视为已确认，不重复询问。；进入条件：已确定 dataFieldCode，并完成岗位确认。；将完整响应保存到资源目录之外的临时 JSON 文件，然后只启动一次 Python：；调用一次 resumeresourcebundleget {&quot;includeallprompts&quot;:true,&quot;includemoduleconfig&quot;:true,&quot;theme&quot;:&quot;default&quot;}。；使用已物化的 resume-module-config.json 执行解析，再执行 runner init。。
+请直接给我可执行的步骤或最终产出，别说废话。">📋 复制调用指令</button>
+    <button class="det-btn">详情 ▾</button>
+  </div>
+  <div class="detail" hidden>
+    <p class="plabel">👉 把下面这段直接发给任意 AI 即可调用：</p>
+    <pre class="prompt">你是我的【resume-ai-help】专属助手。
+背景：用于直接改写、润色或优化简历内容。当用户要求「优化简历」「改写简历」「润色简历」「帮我写简历」「生成优化版简历」「把这段经历写得更好」，或上传整份简历并要求产出修改后的版本时触发。支持复现简历「AI 帮你写」两阶段追问与优化交互；整份优化固定生成 HTML 和 PDF，单字段优化只返回该字段。仅负责内容创作和改写，不执行整份简历诊断、问题清单或 6 维评分；用户仅要求分析问题、评审或打分时，改用 resume-diagnosis。
+请你重点帮我完成这些事：仅排版：不执行岗位确认，直接解析和渲染。；简历已有明确 position：视为已确认，不重复询问。；进入条件：已确定 dataFieldCode，并完成岗位确认。；将完整响应保存到资源目录之外的临时 JSON 文件，然后只启动一次 Python：；调用一次 resumeresourcebundleget {&quot;includeallprompts&quot;:true,&quot;includemoduleconfig&quot;:true,&quot;theme&quot;:&quot;default&quot;}。；使用已物化的 resume-module-config.json 执行解析，再执行 runner init。。
+请直接给我可执行的步骤或最终产出，别说废话。</pre>
+  </div>
+</article>
+<article class="card" data-search="resume-diagnosis 用于诊断、评审或评分整份简历。当用户要求「诊断简历」「简历有什么问题」「看看简历哪里要改」「简历打分」「评审简历」「resume review」，或上传 PDF/DOCX 并要求分析问题、给出评分或修改建议时触发。输出 3 类诊断（NO_DATA / NO_FILL / DESCRIPTION_SUGGEST）和 6 维评分（简历完整度 / 经历描述 / 学习能力 / 专业能力 / 创新领导力 / 职场能力），诊断与评分规则及配置见 `references/`，全程由确定性脚本 + 一次批量 LLM 推理完成。仅诊断、评分和提出建议，不直接重写整份简历或生成优化版；用户明确要求改写、润色、优化内容或生成新版简历时，改用 resume-ai-help。 诊断（3 类问题）：NODATA / NOFILL / DESCRIPTIONSUGGEST； 评分（6 维分数）：简历完整度 / 经历描述 / 学习能力 / 专业能力 / 创新领导力 / 职场能力； 报告输出：一份 HTML 诊断报告（score / beatPercent / reportDetails）。 scripts/orchestrate.py 合并「(finalize) → 注入 LLM 结果 → build-report → 渲染 HTML → 校验」为一次调用。 用户上传/粘贴简历并请求：&quot;帮我诊断&quot;、&quot;简历哪里有问题&quot;、&quot;帮我优化简历&quot;、&quot;简历打分&quot;。 用户问&quot;这份简历能过 HR 初筛吗&quot;。 不适用于：纯面试准备、笔试刷题、offer 选择、薪资谈判。 文本提取不限定文件类型：无论 PDF / DOCX / .doc / 其他格式，一律先用 Read 工具读取附件原文（AI 提取）；">
+  <div class="card-head"><span class="dot dot0"></span><h3>resume-diagnosis</h3></div>
+  <p class="desc">用于诊断、评审或评分整份简历。当用户要求「诊断简历」「简历有什么问题」「看看简历哪里要改」「简历打分」「评审简历」「resume review」，或上传 PDF/DOCX 并要求分析问题、给出评分或修改建议时触发。输出 3 类诊断（NO_DATA / NO_FILL / DESCRIPTION_SUGGEST）和 6 维评分（简历完整度 / 经历描述 / 学习能力 / 专业能力 / 创新领导力 / 职场能力），诊断与评分规则及配置见 `references/`，全程由确定性脚本 + 一次批量 LLM 推理完成。仅诊断、评分和提出建议，不直接重写整份简历或生成优化版；用户明确要求改写、润色、优化内容或生成新版简历时，改用 resume-ai-help。</p>
+  <ul class="caps"><li>诊断（3 类问题）：NODATA / NOFILL / DESCRIPTIONSUGGEST；</li><li>评分（6 维分数）：简历完整度 / 经历描述 / 学习能力 / 专业能力 / 创新领导力 / 职场能力；</li><li>报告输出：一份 HTML 诊断报告（score / beatPercent / reportDetails）。</li><li>scripts/orchestrate.py 合并「(finalize) → 注入 LLM 结果 → build-report → 渲染 HTML → 校验」为一次调用。</li><li>用户上传/粘贴简历并请求：&quot;帮我诊断&quot;、&quot;简历哪里有问题&quot;、&quot;帮我优化简历&quot;、&quot;简历打分&quot;。</li><li>用户问&quot;这份简历能过 HR 初筛吗&quot;。</li></ul>
+  <div class="card-foot">
+    <button class="copy-btn" data-prompt="你是我的【resume-diagnosis】专属助手。
+背景：用于诊断、评审或评分整份简历。当用户要求「诊断简历」「简历有什么问题」「看看简历哪里要改」「简历打分」「评审简历」「resume review」，或上传 PDF/DOCX 并要求分析问题、给出评分或修改建议时触发。输出 3 类诊断（NO_DATA / NO_FILL / DESCRIPTION_SUGGEST）和 6 维评分（简历完整度 / 经历描述 / 学习能力 / 专业能力 / 创新领导力 / 职场能力），诊断与评分规则及配置见 `references/`，全程由确定性脚本 + 一次批量 LLM 推理完成。仅诊断、评分和提出建议，不直接重写整份简历或生成优化版；用户明确要求改写、润色、优化内容或生成新版简历时，改用 resume-ai-help。
+请你重点帮我完成这些事：诊断（3 类问题）：NODATA / NOFILL / DESCRIPTIONSUGGEST；；评分（6 维分数）：简历完整度 / 经历描述 / 学习能力 / 专业能力 / 创新领导力 / 职场能力；；报告输出：一份 HTML 诊断报告（score / beatPercent / reportDetails）。；scripts/orchestrate.py 合并「(finalize) → 注入 LLM 结果 → build-report → 渲染 HTML → 校验」为一次调用。；用户上传/粘贴简历并请求：&quot;帮我诊断&quot;、&quot;简历哪里有问题&quot;、&quot;帮我优化简历&quot;、&quot;简历打分&quot;。；用户问&quot;这份简历能过 HR 初筛吗&quot;。。
+请直接给我可执行的步骤或最终产出，别说废话。">📋 复制调用指令</button>
+    <button class="det-btn">详情 ▾</button>
+  </div>
+  <div class="detail" hidden>
+    <p class="plabel">👉 把下面这段直接发给任意 AI 即可调用：</p>
+    <pre class="prompt">你是我的【resume-diagnosis】专属助手。
+背景：用于诊断、评审或评分整份简历。当用户要求「诊断简历」「简历有什么问题」「看看简历哪里要改」「简历打分」「评审简历」「resume review」，或上传 PDF/DOCX 并要求分析问题、给出评分或修改建议时触发。输出 3 类诊断（NO_DATA / NO_FILL / DESCRIPTION_SUGGEST）和 6 维评分（简历完整度 / 经历描述 / 学习能力 / 专业能力 / 创新领导力 / 职场能力），诊断与评分规则及配置见 `references/`，全程由确定性脚本 + 一次批量 LLM 推理完成。仅诊断、评分和提出建议，不直接重写整份简历或生成优化版；用户明确要求改写、润色、优化内容或生成新版简历时，改用 resume-ai-help。
+请你重点帮我完成这些事：诊断（3 类问题）：NODATA / NOFILL / DESCRIPTIONSUGGEST；；评分（6 维分数）：简历完整度 / 经历描述 / 学习能力 / 专业能力 / 创新领导力 / 职场能力；；报告输出：一份 HTML 诊断报告（score / beatPercent / reportDetails）。；scripts/orchestrate.py 合并「(finalize) → 注入 LLM 结果 → build-report → 渲染 HTML → 校验」为一次调用。；用户上传/粘贴简历并请求：&quot;帮我诊断&quot;、&quot;简历哪里有问题&quot;、&quot;帮我优化简历&quot;、&quot;简历打分&quot;。；用户问&quot;这份简历能过 HR 初筛吗&quot;。。
+请直接给我可执行的步骤或最终产出，别说废话。</pre>
+  </div>
+</article></div>
+  </div>
+  <footer class="footer">本产品由 WorkBuddy 技能库二次开发整理 · 购买后私发密码 · 禁止倒卖源码</footer>
+</div>
+<div class="toast" id="toast">已复制到剪贴板 ✓</div>
+<script>
+var GATE_SALT="3aa96ba3fb4585feafa70597";var GATE_HASH="e9ed3e7ec876dc44393dd9028ba2d7cb5e7fe747e3e4dfcdadb071ae81703122";var GATE_KEY="ug_4b188bed2b91";
+async function sha256hex(s){var b=new TextEncoder().encode(s);var d=await crypto.subtle.digest("SHA-256",b);return Array.from(new Uint8Array(d)).map(function(x){return x.toString(16).padStart(2,"0");}).join("");}
+async function unlock(){var v=document.getElementById('pw').value;var e=document.getElementById('err');if(await sha256hex(GATE_SALT+v)===GATE_HASH){document.getElementById('gate').style.display='none';document.getElementById('app').style.display='block';sessionStorage.setItem(GATE_KEY,'1');}else{e.textContent='密码错误，请重试';}}
+if(sessionStorage.getItem(GATE_KEY)==='1'){document.getElementById('gate').style.display='none';document.getElementById('app').style.display='block';}
+function norm(q){q=(q||'').trim().toLowerCase();var fill=['我要','我需要','帮我','我想','请问','怎么','如何','怎样','才能','可以','能','一下','一个','一些','进行','需要','想要','求','最好','能不能','有没有','自己','教我','帮忙','快'];for(var i=0;i<fill.length;i++){while(q.indexOf(fill[i])>=0){q=q.split(fill[i]).join('');}}return q;}
+function tokens(q){var t=[];if(q.length>=2)t.push(q);for(var len=3;len>=2;len--){for(var i=0;i+len<=q.length;i++){t.push(q.substr(i,len));}}var seen={},out=[];for(var j=0;j<t.length;j++){if(!seen[t[j]]){seen[t[j]]=1;out.push(t[j]);}}return out;}
+function search(){var raw=document.getElementById('q').value;var q=norm(raw);var cards=document.querySelectorAll('.card');var total=cards.length;if(q===''){cards.forEach(function(c){c.style.display='';});document.getElementById('cnt').textContent='共 '+total+' 个';return;}var toks=tokens(q);var n=0;cards.forEach(function(c){var txt=c.getAttribute('data-search').toLowerCase();var hit=false;for(var i=0;i<toks.length;i++){if(toks[i].length>=2 && txt.indexOf(toks[i])>=0){hit=true;break;}}c.style.display=hit?'':'none';if(hit)n++;});document.getElementById('cnt').textContent='找到 '+n+' 个相关技能（共 '+total+'）';}
+function chip(v){document.getElementById('q').value=v;search();}
+document.querySelectorAll('.det-btn').forEach(function(b){b.onclick=function(){var d=b.closest('.card').querySelector('.detail');var hid=d.hasAttribute('hidden');if(hid){d.removeAttribute('hidden');b.textContent='收起 ▴';}else{d.setAttribute('hidden','');b.textContent='详情 ▾';}};});
+document.querySelectorAll('.copy-btn').forEach(function(b){b.onclick=function(){var t=b.getAttribute('data-prompt');navigator.clipboard.writeText(t).then(function(){showToast();}).catch(function(){var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();showToast();});};});
+function showToast(){var x=document.getElementById('toast');x.classList.add('show');setTimeout(function(){x.classList.remove('show');},1500);}
+</script>
+</body></html>
